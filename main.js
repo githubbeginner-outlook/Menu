@@ -1,10 +1,3 @@
-class Tag {
-    constructor(id, tagName) {
-        this.id = id;
-        this.tagName = tagName;
-    }
-}
-
 class Group {
     constructor(id, groupName) {
         this.id = id;
@@ -18,8 +11,8 @@ class IdGenerator {
     constructor() {
         this.id = 0;
         this.generate = function () {
-            id += 1;
-            return id;
+            this.id += 1;
+            return this.id;
         };
     }
 }
@@ -40,14 +33,14 @@ class TagController {
     }
     
     Create(name) {
-        // let nextId = this.#TagIdGenerateTagIdGenerate();
+        let nextId = this.#TagIdGenerate();
+        console.log(nextId);
         while (this.tagsMap.has(nextId)) {
             alert(`tagsMap has ${nextId}!`);
             // nextId = this.#TagIdGenerateTagIdGenerate();
         }
-        let tempTag = new Tag(nextId, name);
-        this.tagsMap.set(nextId, tempTag);
-        return tempTag;
+        this.tagsMap.set(nextId, name);
+        return nextId;
     }
 }
 
@@ -83,9 +76,9 @@ fg.tags.push(fish)
 let pg = groupControler.generate("porkGroup");
 pg.tags.push(pork)
 
-let md = new Tag(tidg.generate(), "maindish")
-let mdg = new Group(gidg.generate(), "mainDishGroup")
-mdg.tags.push(md)
-mdg.items.push(fg, pg)
+// let md = new Tag(tidg.generate(), "maindish")
+// let mdg = new Group(gidg.generate(), "mainDishGroup")
+// mdg.tags.push(md)
+// mdg.items.push(fg, pg)
 //jsontest1
 //var a = document.createElement("div");a.innerHTML = JSON.stringify(mdg);document.body.appendChild(a)
