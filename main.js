@@ -29,6 +29,10 @@ class TagController {
     #TagIdGenerate(){
         let newId = 1<<this.lastSwifted;
         this.lastSwifted +=1;
+        if(this.lastSwifted>=31){
+            this.lastSwifted = 0;
+            this.lastBookIndex +=1;
+        }
         return newId;
     }
     
@@ -67,10 +71,10 @@ class GroupController {
         return tempgroup;
     }
 }
-let tagControler = new TagController(0);
+let tagControler = new TagController();
 let fish = tagControler.Create("fish");
 let pork = tagControler.Create("pork");
-let groupControler = new GroupController(0);
+let groupControler = new GroupController();
 let fg = groupControler.generate("fishGroup");
 fg.tags.push(fish)
 let pg = groupControler.generate("porkGroup");
