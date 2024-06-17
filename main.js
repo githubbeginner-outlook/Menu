@@ -19,19 +19,24 @@ class IdGenerator {
 
 
 class TagController {
+    #lastBookIndex;
+    #lastSwifted;
+    get LastBookIndex(){
+        return this.#lastBookIndex;
+    }
     constructor() {
-        this.lastBookIndex = 0;
-        this.lastSwifted = 0;
+        this.#lastBookIndex = 0;
+        this.#lastSwifted = 0;
         this.tagBooks = new Map();
         this.tagsMap = new Map();
-        this.tagBooks.set(this.lastBookIndex, this.tagsMap);
+        this.tagBooks.set(this.#lastBookIndex, this.tagsMap);
     }
     #TagIdGenerate(){
-        let newId = 1<<this.lastSwifted;
-        this.lastSwifted +=1;
-        if(this.lastSwifted>=31){
-            this.lastSwifted = 0;
-            this.lastBookIndex +=1;
+        let newId = 1<<this.#lastSwifted;
+        this.#lastSwifted +=1;
+        if(this.#lastSwifted>=31){
+            this.#lastSwifted = 0;
+            this.#lastBookIndex +=1;
         }
         return newId;
     }
@@ -50,8 +55,10 @@ class TagController {
 
 class ItemController{
     constructor(){
-        this.
-        this.itemIdGenerator = new IdGenerator();
+        this.itemsBook = new Map();
+    }
+    #ItemIdGenerate(){
+
     }
 }
 
