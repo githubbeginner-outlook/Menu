@@ -24,6 +24,9 @@ class TagController {
     get LastBookIndex(){
         return this.#lastBookIndex;
     }
+    get LastSwifted(){
+        return this.#lastSwifted;
+    }
     constructor() {
         this.#lastBookIndex = 0;
         this.#lastSwifted = 0;
