@@ -31,8 +31,8 @@ class TagController {
         this.#lastBookIndex = 0;
         this.#lastSwifted = 0;
         this.tagBooks = new Map();
-        this.tagsMap = new Map();
-        this.tagBooks.set(this.#lastBookIndex, this.tagsMap);
+        this.tagsPage = new Map();
+        this.tagBooks.set(this.#lastBookIndex, this.tagsPage);
     }
     #TagIdGenerate(){
         let newId = 1<<this.#lastSwifted;
@@ -40,18 +40,20 @@ class TagController {
         if(this.#lastSwifted>=31){
             this.#lastSwifted = 0;
             this.#lastBookIndex +=1;
+            this.tagsPage = new Map();
+            this.tagBooks.set(this.#lastBookIndex,this.tagsPage);
         }
-        return newId;
+        return [this.LastBookIndex,newId];
     }
     
     Create(name) {
         let nextId = this.#TagIdGenerate();
         console.log(nextId);
-        while (this.tagsMap.has(nextId)) {
+        while (this.tagsPage.has(nextId)) {
             alert(`tagsMap has ${nextId}!`);
             // nextId = this.#TagIdGenerateTagIdGenerate();
         }
-        this.tagsMap.set(nextId, name);
+        this.tagsPage.set(nextId, name);
         return nextId;
     }
 }
@@ -84,6 +86,9 @@ class GroupController {
 let tagControler = new TagController();
 let fish = tagControler.Create("fish");
 let pork = tagControler.Create("pork");
+// console.log(tagControler.tagBooks);
+// console.log(JSON.stringify(tagControler.tagBooks));
+
 let groupControler = new GroupController();
 let fg = groupControler.generate("fishGroup");
 fg.tags.push(fish)
