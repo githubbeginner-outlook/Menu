@@ -1,3 +1,14 @@
+"use strict";
+class GlobalSettings{
+    #arrayOfSettings
+    get MapFirstIndex(){
+        return this.#arrayOfSettings[0];
+    }
+    constructor(newSettings){
+        this.#arrayOfSettings = newSettings;
+    }
+}
+let myGlobalSettings = new GlobalSettings([1]);
 class Group {
     constructor(id, groupName) {
         this.id = id;
@@ -59,11 +70,20 @@ class TagController {
 }
 
 class ItemController{
+    #currentItemId;
+    #currentItemBookIndex;
+    itemsBook;
+    itemsPage;
     constructor(){
+        // {itemid : itemname}
         this.itemsBook = new Map();
+        this.itemsPage = new Map();
+        this.itemsBook.set(0,)
+        this.#currentItemId = 0;
     }
     #ItemIdGenerate(){
-
+        let newId = this.#currentItemId+1;
+        
     }
 }
 
