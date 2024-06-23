@@ -1,7 +1,7 @@
 "use strict";
 class GlobalSettings{
     #arrayOfSettings
-    get MapFirstIndex(){
+    get NonArrayFirstIndex(){
         return this.#arrayOfSettings[0];
     }
     constructor(newSettings){
@@ -39,7 +39,7 @@ class TagController {
         return this.#lastSwifted;
     }
     constructor() {
-        this.#lastBookIndex = 0;
+        this.#lastBookIndex = myGlobalSettings.NonArrayFirstIndex;
         this.#lastSwifted = 0;
         this.tagBooks = new Map();
         this.tagsPage = new Map();
@@ -78,12 +78,16 @@ class ItemController{
         // {itemid : itemname}
         this.itemsBook = new Map();
         this.itemsPage = new Map();
-        this.itemsBook.set(0,)
-        this.#currentItemId = 0;
+        this.#currentItemBookIndex = myGlobalSettings.NonArrayFirstIndex;
+        this.itemsBook.set(this.#currentItemBookIndex,this.itemsPage);
+        this.#currentItemId = myGlobalSettings.NonArrayFirstIndex;
     }
     #ItemIdGenerate(){
         let newId = this.#currentItemId+1;
-        
+        if(newId>Number.MAX_SAFE_INTEGER){
+            this.#currentItemBookIndex +=1;
+            this.#currentItemId = myGlobalSettings.NonArrayFirstIndex;
+        }
     }
 }
 
