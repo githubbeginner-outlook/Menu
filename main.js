@@ -1,127 +1,110 @@
 "use strict";
-class GlobalSettings{
+class GlobalSettings {
     #arrayOfSettings
-    get NonArrayFirstIndex(){
+    get NonArrayFirstIndex() {
         return this.#arrayOfSettings[0];
     }
-    constructor(newSettings){
+    constructor(newSettings) {
         this.#arrayOfSettings = newSettings;
     }
 }
 let myGlobalSettings = new GlobalSettings([1]);
-class Group {
-    constructor(id, groupName) {
-        this.id = id;
-        this.groupName = groupName;
-        this.tags = [];
-        this.items = [];
-    }
-}
-
-class IdGenerator {
-    constructor() {
-        this.id = 0;
-        this.generate = function () {
-            this.id += 1;
-            return this.id;
-        };
-    }
-}
-
 
 class TagController {
-    #lastBookIndex;
-    #lastSwifted;
-    get LastBookIndex(){
-        return this.#lastBookIndex;
+    #CurrentTagBookIndex;
+    #CurrentTagSwifted;
+    get CurrentBookIndex() {
+        return this.#CurrentTagBookIndex;
     }
-    get LastSwifted(){
-        return this.#lastSwifted;
+    get CurrentSwifted() {
+        return this.#CurrentTagSwifted;
     }
     constructor() {
-        this.#lastBookIndex = myGlobalSettings.NonArrayFirstIndex;
-        this.#lastSwifted = 0;
+        this.#CurrentTagBookIndex = myGlobalSettings.NonArrayFirstIndex;
+        this.#CurrentTagSwifted = 0;
         this.tagBooks = new Map();
         this.tagsPage = new Map();
-        this.tagBooks.set(this.#lastBookIndex, this.tagsPage);
+        this.tagBooks.set(this.#CurrentTagBookIndex, this.tagsPage);
     }
-    #TagIdGenerate(){
-        let newId = 1<<this.#lastSwifted;
-        this.#lastSwifted +=1;
-        if(this.#lastSwifted>=31){
-            this.#lastSwifted = 0;
-            this.#lastBookIndex +=1;
+    #TagIdGenerate() {
+        let newId = 1 << this.#CurrentTagSwifted;
+        this.#CurrentTagSwifted += 1;
+        if (this.#CurrentTagSwifted >= 31) {
+            this.#CurrentTagSwifted = 0;
+            this.#CurrentTagBookIndex += 1;
             this.tagsPage = new Map();
-            this.tagBooks.set(this.#lastBookIndex,this.tagsPage);
+            this.tagBooks.set(this.#CurrentTagBookIndex, this.tagsPage);
         }
-        return [this.LastBookIndex,newId];
+        return newId;
     }
-    
+
     Create(name) {
         let nextId = this.#TagIdGenerate();
         console.log(nextId);
         while (this.tagsPage.has(nextId)) {
             alert(`tagsMap has ${nextId}!`);
-            // nextId = this.#TagIdGenerateTagIdGenerate();
+            nextId = this.#TagIdGenerate();
         }
         this.tagsPage.set(nextId, name);
         return nextId;
     }
 }
 
-class ItemController{
+class ItemController {
     #currentItemId;
     #currentItemBookIndex;
     itemsBook;
     itemsPage;
-    constructor(){
+    constructor() {
         // {itemid : itemname}
         this.itemsBook = new Map();
         this.itemsPage = new Map();
         this.#currentItemBookIndex = myGlobalSettings.NonArrayFirstIndex;
-        this.itemsBook.set(this.#currentItemBookIndex,this.itemsPage);
-        this.#currentItemId = myGlobalSettings.NonArrayFirstIndex;
+        this.itemsBook.set(this.#currentItemBookIndex, this.itemsPage);
+        this.#currentItemId = myGlobalSettings.NonArrayFirstIndex - 1;
     }
-    #ItemIdGenerate(){
-        let newId = this.#currentItemId+1;
-        if(newId>Number.MAX_SAFE_INTEGER){
-            this.#currentItemBookIndex +=1;
+    #ItemIdGenerate() {
+        this.#currentItemId += 1;
+        if (this.#currentItemId > Number.MAX_SAFE_INTEGER) {
+            this.#currentItemBookIndex += 1;
+            this.itemsPage = new Map();
+            this.itemsBook.set(this.#currentItemBookIndex, this.itemsPage);
             this.#currentItemId = myGlobalSettings.NonArrayFirstIndex;
         }
+        return this.#currentItemId;
+    }
+
+    Create(name) {
+        let nextId = this.#ItemIdGenerate();
+        console.log(nextId);
+        while (this.itemsPage.has(nextId)) {
+            alert(`itemsPage has ${nextId}!`);
+            nextId = this.#ItemIdGenerate();
+        }
+        this.itemsPage.set(nextId, name);
+        return nextId;
     }
 }
 
-class GroupController {
+class ItemTagRelationController {
+    #itemsTagsBook;
+    #itemsTagsPage;
+    #currentItemsTagsBookIndex;
     constructor() {
-        this.groupsMap = new Map();
-        this.groupIdGenerator = new IdGenerator();
-    }
-    generate(name) {
-        let nextId = this.groupIdGenerator.generate();
-        while (this.groupsMap.has(nextId)) {
-            alert(`groupsMap has ${nextId}!`);
-            nextId = this.groupIdGenerator.generate();
-        }
-        let tempgroup = new Group(nextId, name);
-        this.groupsMap.set(nextId, tempgroup);
-        return tempgroup;
+        // {itemid : tagId}
+        this.#itemsTagsBook = new Map();
+        this.#itemsTagsPage = new Map();
+        this.#currentItemsTagsBookIndex=myGlobalSettings.NonArrayFirstIndex;
+        this.#itemsTagsBook.set(this.#currentItemsTagsBookIndex,this.#itemsTagsPage);
     }
 }
+
 let tagControler = new TagController();
 let fish = tagControler.Create("fish");
 let pork = tagControler.Create("pork");
 // console.log(tagControler.tagBooks);
 // console.log(JSON.stringify(tagControler.tagBooks));
 
-let groupControler = new GroupController();
-let fg = groupControler.generate("fishGroup");
-fg.tags.push(fish)
-let pg = groupControler.generate("porkGroup");
-pg.tags.push(pork)
 
-// let md = new Tag(tidg.generate(), "maindish")
-// let mdg = new Group(gidg.generate(), "mainDishGroup")
-// mdg.tags.push(md)
-// mdg.items.push(fg, pg)
 //jsontest1
 //var a = document.createElement("div");a.innerHTML = JSON.stringify(mdg);document.body.appendChild(a)
