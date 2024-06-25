@@ -1,11 +1,16 @@
 "use strict";
 class GlobalSettings {
-    #arrayOfSettings
+    static singleton;
+    #arrayOfSettings;
     get NonArrayFirstIndex() {
         return this.#arrayOfSettings[0];
     }
     constructor(newSettings) {
         this.#arrayOfSettings = newSettings;
+        if(this.singleton != null){
+            delete this.singleton;
+        }
+        this.singleton = this;
     }
 }
 let myGlobalSettings = new GlobalSettings([1]);
@@ -53,22 +58,22 @@ class TagController {
 class ItemController {
     #currentItemId;
     #currentItemBookIndex;
-    itemsBook;
-    itemsPage;
+    #itemsBook;
+    #itemsPage;
     constructor() {
         // {itemid : itemname}
-        this.itemsBook = new Map();
-        this.itemsPage = new Map();
+        this.#itemsBook = new Map();
+        this.#itemsPage = new Map();
         this.#currentItemBookIndex = myGlobalSettings.NonArrayFirstIndex;
-        this.itemsBook.set(this.#currentItemBookIndex, this.itemsPage);
+        this.#itemsBook.set(this.#currentItemBookIndex, this.#itemsPage);
         this.#currentItemId = myGlobalSettings.NonArrayFirstIndex - 1;
     }
     #ItemIdGenerate() {
         this.#currentItemId += 1;
         if (this.#currentItemId > Number.MAX_SAFE_INTEGER) {
             this.#currentItemBookIndex += 1;
-            this.itemsPage = new Map();
-            this.itemsBook.set(this.#currentItemBookIndex, this.itemsPage);
+            this.#itemsPage = new Map();
+            this.#itemsBook.set(this.#currentItemBookIndex, this.#itemsPage);
             this.#currentItemId = myGlobalSettings.NonArrayFirstIndex;
         }
         return this.#currentItemId;
@@ -77,11 +82,11 @@ class ItemController {
     Create(name) {
         let nextId = this.#ItemIdGenerate();
         console.log(nextId);
-        while (this.itemsPage.has(nextId)) {
+        while (this.#itemsPage.has(nextId)) {
             alert(`itemsPage has ${nextId}!`);
             nextId = this.#ItemIdGenerate();
         }
-        this.itemsPage.set(nextId, name);
+        this.#itemsPage.set(nextId, name);
         return nextId;
     }
 }
@@ -99,9 +104,9 @@ class ItemTagRelationController {
     }
 }
 
-let tagControler = new TagController();
-let fish = tagControler.Create("fish");
-let pork = tagControler.Create("pork");
+// let tagControler = new TagController();
+// let fish = tagControler.Create("fish");
+// let pork = tagControler.Create("pork");
 // console.log(tagControler.tagBooks);
 // console.log(JSON.stringify(tagControler.tagBooks));
 
