@@ -1,16 +1,11 @@
 "use strict";
 class GlobalSettings {
-    static singleton;
     #arrayOfSettings;
     get NonArrayFirstIndex() {
         return this.#arrayOfSettings[0];
     }
     constructor(newSettings) {
         this.#arrayOfSettings = newSettings;
-        if(this.singleton != null){
-            delete this.singleton;
-        }
-        this.singleton = this;
     }
 }
 let myGlobalSettings = new GlobalSettings([1]);
