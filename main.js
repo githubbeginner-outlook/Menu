@@ -11,29 +11,31 @@ class GlobalSettings {
 let myGlobalSettings = new GlobalSettings([1]);
 
 class TagController {
-    #CurrentTagBookIndex;
-    #CurrentTagSwifted;
+    #tagBooks
+    #tagsPage
+    #currentTagBookIndex;
+    #currentTagSwifted;
     get CurrentBookIndex() {
-        return this.#CurrentTagBookIndex;
+        return this.#currentTagBookIndex;
     }
     get CurrentSwifted() {
-        return this.#CurrentTagSwifted;
+        return this.#currentTagSwifted;
     }
     constructor() {
-        this.#CurrentTagBookIndex = myGlobalSettings.NonArrayFirstIndex;
-        this.#CurrentTagSwifted = 0;
-        this.tagBooks = new Map();
-        this.tagsPage = new Map();
-        this.tagBooks.set(this.#CurrentTagBookIndex, this.tagsPage);
+        this.#currentTagBookIndex = myGlobalSettings.NonArrayFirstIndex;
+        this.#currentTagSwifted = 0;
+        this.#tagBooks = new Map();
+        this.#tagsPage = new Map();
+        this.#tagBooks.set(this.#currentTagBookIndex, this.#tagsPage);
     }
     #TagIdGenerate() {
-        let newId = 1 << this.#CurrentTagSwifted;
-        this.#CurrentTagSwifted += 1;
-        if (this.#CurrentTagSwifted >= 31) {
-            this.#CurrentTagSwifted = 0;
-            this.#CurrentTagBookIndex += 1;
-            this.tagsPage = new Map();
-            this.tagBooks.set(this.#CurrentTagBookIndex, this.tagsPage);
+        let newId = 1 << this.#currentTagSwifted;
+        this.#currentTagSwifted += 1;
+        if (this.#currentTagSwifted >= 31) {
+            this.#currentTagSwifted = 0;
+            this.#currentTagBookIndex += 1;
+            this.#tagsPage = new Map();
+            this.#tagBooks.set(this.#currentTagBookIndex, this.#tagsPage);
         }
         return newId;
     }
@@ -41,11 +43,11 @@ class TagController {
     Create(name) {
         let nextId = this.#TagIdGenerate();
         console.log(nextId);
-        while (this.tagsPage.has(nextId)) {
+        while (this.#tagsPage.has(nextId)) {
             alert(`tagsMap has ${nextId}!`);
             nextId = this.#TagIdGenerate();
         }
-        this.tagsPage.set(nextId, name);
+        this.#tagsPage.set(nextId, name);
         return nextId;
     }
 }
@@ -90,14 +92,25 @@ class ItemTagRelationController {
     #itemsTagsBook;
     #itemsTagsPage;
     #currentItemsTagsBookIndex;
-    constructor() {
+
+    #itemController;
+    #tagController;
+
+    #LastCreatedTag;
+    constructor(targetItemController, targetTagController) {
         // {itemid : tagId}
         this.#itemsTagsBook = new Map();
         this.#itemsTagsPage = new Map();
         this.#currentItemsTagsBookIndex=myGlobalSettings.NonArrayFirstIndex;
         this.#itemsTagsBook.set(this.#currentItemsTagsBookIndex,this.#itemsTagsPage);
+
+        this.#itemController = targetItemController;
+        this.#tagController = targetTagController;
     }
+
+    CreateMarkedTag 
 }
+
 
 // let tagControler = new TagController();
 // let fish = tagControler.Create("fish");
