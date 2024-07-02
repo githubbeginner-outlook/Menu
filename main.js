@@ -101,17 +101,36 @@ class ItemTagRelationController {
         // {itemid : tagId}
         this.#itemsTagsBook = new Map();
         this.#itemsTagsPage = new Map();
-        this.#currentItemsTagsBookIndex=myGlobalSettings.NonArrayFirstIndex;
-        this.#itemsTagsBook.set(this.#currentItemsTagsBookIndex,this.#itemsTagsPage);
+        this.#currentItemsTagsBookIndex = myGlobalSettings.NonArrayFirstIndex;
+        this.#itemsTagsBook.set(this.#currentItemsTagsBookIndex, this.#itemsTagsPage);
 
         this.#itemController = targetItemController;
         this.#tagController = targetTagController;
     }
-
-    CreateMarkedTag 
 }
 
 
+class SearchSelectsElement extends HTMLElement {
+
+    constructor() {
+        self = super();
+    }
+    connectedCallback() {
+        // Create a shadow root
+        const shadow = this.attachShadow({ mode: "open" });
+        const spanWrapper = document.createElement("span");
+        // spanWrapper.setAttribute("class", "wrapper");
+        const labelInput = document.createElement("label");
+        labelInput.setAttribute("for","search");
+        const inputText = document.createElement("input");
+        inputText.setAttribute("type","text");
+        shadow.appendChild(spanWrapper);
+        spanWrapper.appendChild(labelInput);
+        spanWrapper.appendChild(inputText);
+    }
+}
+
+customElements.define("search-selects", SearchSelectsElement)
 // let tagControler = new TagController();
 // let fish = tagControler.Create("fish");
 // let pork = tagControler.Create("pork");
