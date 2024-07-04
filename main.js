@@ -120,12 +120,13 @@ class SearchSelectsElement extends HTMLElement {
         const shadow = this.attachShadow({ mode: "open" });
         const spanWrapper = document.createElement("span");
         // spanWrapper.setAttribute("class", "wrapper");
-        const labelInput = document.createElement("label");
-        labelInput.setAttribute("for","search");
+        // const labelInput = document.createElement("label");
+        // labelInput.setAttribute("for","search");
         const inputText = document.createElement("input");
         inputText.setAttribute("type","text");
+        inputText.setAttribute("title","searchbox")
         shadow.appendChild(spanWrapper);
-        spanWrapper.appendChild(labelInput);
+        // spanWrapper.appendChild(labelInput);
         spanWrapper.appendChild(inputText);
     }
 }
