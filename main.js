@@ -109,6 +109,25 @@ class ItemTagRelationController {
     }
 }
 
+//#region Test With Button
+{
+    let newbr = document.createElement("br");
+    document.body.appendChild(newbr);
+    let buttonTest = document.createElement("button");
+    buttonTest.textContent = "Test Button";
+    document.body.appendChild(buttonTest);
+
+    function handleButtonClick() {
+        alert("Button was clicked!");
+    }
+
+    buttonTest.addEventListener("click", handleButtonClick);
+}
+//#endregion 
+
+
+//#region SearchSelectsElement
+
 
 class SearchSelectsElement extends HTMLElement {
 
@@ -137,6 +156,8 @@ customElements.define("search-selects", SearchSelectsElement)
 // let pork = tagControler.Create("pork");
 // console.log(tagControler.tagBooks);
 // console.log(JSON.stringify(tagControler.tagBooks));
+
+// #endregion SearchSelectsElement
 
 
 //jsontest1
